@@ -1,7 +1,4 @@
-use std::{
-    collections::HashMap,
-    fmt::Display,
-};
+use std::{collections::HashMap, fmt::Display};
 
 use entity::{CardinalDirections, Entity};
 use rand::{seq::SliceRandom, Rng};
@@ -72,6 +69,14 @@ impl<const N: u32> Grid<N> {
         let west = self.entities.get(&(x - 1, y));
 
         CardinalDirections([north, east, south, west])
+    }
+
+    pub fn move_to(&mut self, new_pos: Coordinate) {
+        todo!()
+    }
+
+    pub fn shoot_at(&mut self, shooting: Coordinate) {
+        todo!()
     }
 }
 

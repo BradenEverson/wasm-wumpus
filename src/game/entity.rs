@@ -34,8 +34,25 @@ impl<'grid> CardinalDirections<'grid> {
             .clone()
             .iter()
             .filter_map(|dir| *dir)
-            .filter(|dir| seen.insert(*dir))
+            .filter(|dir| seen.insert(*dir) && *dir != &Entity::Empty)
             .cloned()
             .collect()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{CardinalDirections, Entity};
+
+    #[test]
+    fn cardinal_direction_behave_properly() {
+        let north = Some(&Entity::BottomlessPit);
+        let south = Some(&Entity::BottomlessPit);
+        let east = None;
+        let west = Some(&Entity::Empty);
+
+        let dirs = CardinalDirections([north, south, east, west]);
+
+        assert_eq!(dirs.nearby_rooms().len(), 1)
     }
 }
