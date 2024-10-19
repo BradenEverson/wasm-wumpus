@@ -1,12 +1,18 @@
-use std::{collections::HashMap, fmt::Display};
+use std::{
+    collections::HashMap,
+    fmt::Display,
+};
 
+use entity::{CardinalDirections, Entity};
 use rand::{seq::SliceRandom, Rng};
+
+pub mod entity;
 
 pub type Coordinate = (u32, u32);
 
 pub struct Grid<const N: u32> {
     entities: HashMap<Coordinate, Entity>,
-    player: Coordinate
+    player: Coordinate,
 }
 
 impl<const N: u32> Grid<N> {
@@ -23,7 +29,11 @@ impl<const N: u32> Grid<N> {
         let player = (rng.gen_range(0..N), rng.gen_range(0..N));
         entities.insert(player, Entity::Player);
 
-        let mut valid_spots: Vec<_> = entities.keys().filter(|location| *location != &player).cloned().collect();
+        let mut valid_spots: Vec<_> = entities
+            .keys()
+            .filter(|location| *location != &player)
+            .cloned()
+            .collect();
         valid_spots.shuffle(&mut rng);
 
         for _ in 0..bats {
@@ -61,7 +71,7 @@ impl<const N: u32> Grid<N> {
         let south = self.entities.get(&(x, y + 1));
         let west = self.entities.get(&(x - 1, y));
 
-        CardinalDirections { north, east, south, west }
+        CardinalDirections([north, east, south, west])
     }
 }
 
@@ -75,37 +85,6 @@ impl<const N: u32> Display for Grid<N> {
         }
         Ok(())
     }
-}
-
-pub enum Entity {
-    Arrow,
-    Wumpus,
-    BigBat,
-    BottomlessPit,
-    Player,
-    Empty,
-}
-
-impl Display for Entity {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let char_code = match *self {
-            Entity::BigBat => "🦇",
-            Entity::BottomlessPit => "🕳️",
-            Entity::Arrow => ">",
-            Entity::Empty => " ",
-            Entity::Wumpus => "👹",
-            Entity::Player => "😀",
-        };
-
-        write!(f, "{}", char_code)
-    }
-}
-
-pub struct CardinalDirections<'grid> {
-    pub north: Option<&'grid Entity>,
-    pub east: Option<&'grid Entity>,
-    pub south: Option<&'grid Entity>,
-    pub west: Option<&'grid Entity>
 }
 
 #[cfg(test)]
