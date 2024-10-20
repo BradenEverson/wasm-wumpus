@@ -24,7 +24,6 @@ impl Display for Entity {
         write!(f, "{}", char_code)
     }
 }
-
 pub struct CardinalDirections<'grid>(pub [Option<&'grid Entity>; 4]);
 
 impl<'grid> CardinalDirections<'grid> {
@@ -56,3 +55,4 @@ mod tests {
         assert_eq!(dirs.nearby_rooms().len(), 1)
     }
 }
+
