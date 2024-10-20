@@ -10,6 +10,7 @@ pub type Coordinate = (u32, u32);
 pub struct Grid<const N: u32> {
     entities: HashMap<Coordinate, Entity>,
     player: Coordinate,
+    arrows: u32
 }
 
 impl<const N: u32> Grid<N> {
@@ -50,7 +51,7 @@ impl<const N: u32> Grid<N> {
         let wumpus_pos = valid_spots.pop().unwrap();
         entities.insert(wumpus_pos, Entity::Wumpus);
 
-        Self { entities, player }
+        Self { entities, player, arrows: 5 }
     }
 
     pub fn cur_pos(&self) -> &Coordinate {
@@ -71,12 +72,19 @@ impl<const N: u32> Grid<N> {
         CardinalDirections([north, east, south, west])
     }
 
-    pub fn move_to(&mut self, new_pos: Coordinate) {
-        todo!()
+    pub fn move_to(&mut self, new_pos: Coordinate) -> Option<Entity> {
+        self.entities.insert(self.player, Entity::Empty);
+
+        self.entities.insert(new_pos, Entity::Player)
     }
 
-    pub fn shoot_at(&mut self, shooting: Coordinate) {
-        todo!()
+    pub fn shoot_at(&mut self, shooting: Coordinate) -> bool {
+        self.arrows -= 1;
+        if let Entity::Wumpus = self.entities[&shooting] {
+            true
+        } else {
+            false
+        }
     }
 }
 
