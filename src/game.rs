@@ -14,12 +14,12 @@ pub struct GameSession {
 
 #[wasm_bindgen]
 impl GameSession {
-    pub fn new(bats: u8, pits: u8) -> GameSession {
-        Self {
-            grid: Grid::generate(bats, pits),
+    pub fn new(bats: u8, pits: u8, arrows: u8) -> Option<GameSession> {
+        Some(Self {
+            grid: Grid::generate(bats, pits, arrows)?,
             moved_to: None,
             state: None,
-        }
+        })
     }
 
     pub fn perform_action(&mut self, action: Action, direction: Direction) {

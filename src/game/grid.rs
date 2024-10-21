@@ -17,7 +17,10 @@ pub struct Grid<const N: u8> {
 }
 
 impl<const N: u8> Grid<N> {
-    pub fn generate(bats: u8, pits: u8) -> Self {
+    pub fn generate(bats: u8, pits: u8, arrows: u8) -> Option<Self> {
+        if bats + pits + arrows + 2 > N * N {
+            return None;
+        }
         let mut rng = rand::thread_rng();
         let mut entities = HashMap::new();
 
@@ -49,17 +52,23 @@ impl<const N: u8> Grid<N> {
             entities.insert(pit_pos, Entity::BottomlessPit);
         }
 
+        for _ in 0..arrows {
+            // Add a couple arrows
+            let arrow_pos = valid_spots.pop().unwrap();
+            entities.insert(arrow_pos, Entity::Arrow);
+        }
+
         // Enter the wumpus
 
         let wumpus_pos = valid_spots.pop().unwrap();
         entities.insert(wumpus_pos, Entity::Wumpus);
 
-        Self {
+        Some(Self {
             entities,
             player,
             arrows: 5,
             wumpus: wumpus_pos,
-        }
+        })
     }
 
     pub fn cur_pos(&self) -> &Coordinate {
@@ -179,14 +188,14 @@ mod tests {
 
     #[test]
     fn test_format() {
-        let grid = Grid::<5>::generate(2, 2);
+        let grid = Grid::<5>::generate(2, 2, 2).expect("Create grid");
 
         println!("{}", grid)
     }
 
     #[test]
     fn arrows_run_out_properly() {
-        let mut grid: Grid<5> = Grid::generate(0, 0);
+        let mut grid: Grid<5> = Grid::generate(0, 0, 2).expect("Create grid");
         // Clear the wumpus so we always miss
         grid.entities.insert(grid.wumpus, Entity::Empty);
         let mut arrows_shot = 0;
@@ -200,7 +209,14 @@ mod tests {
 
     #[test]
     fn shooting_a_wumpus_wins() {
-        let mut grid: Grid<5> = Grid::generate(0, 0);
+        let mut grid: Grid<5> = Grid::generate(0, 0, 0).expect("Create grid");
         assert!(grid.shoot_at(grid.wumpus))
+    }
+
+    #[test]
+    fn overcrowded_conditions_create_no_grid() {
+        let grid_failure = Grid::<2>::generate(100, 100, 100);
+
+        assert!(grid_failure.is_none())
     }
 }
