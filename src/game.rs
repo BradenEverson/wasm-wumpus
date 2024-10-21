@@ -48,6 +48,10 @@ impl GameSession {
         self.grid.to_string()
     }
 
+    pub fn get_curr_room(&self) -> Option<Entity> {
+        self.moved_to
+    }
+
     pub fn get_status_messages(&self) -> Vec<String> {
         let mut res = vec![];
         let nearby = self.grid.look_around();
@@ -58,7 +62,7 @@ impl GameSession {
                 Entity::BigBat => Some("You hear whooshing nearby...".to_string()),
                 Entity::BottomlessPit => Some("You feel a faint breeze.".to_string()),
                 Entity::Wumpus => Some("You smell a Wumpus a lurkin'".to_string()),
-                _ => None
+                _ => None,
             };
 
             if let Some(msg) = room_msg {
@@ -79,8 +83,6 @@ impl GameSession {
                 _ => {}
             }
         }
-
-        self.moved_to = None
     }
 }
 

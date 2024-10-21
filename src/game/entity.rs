@@ -1,5 +1,8 @@
 use std::{collections::HashSet, fmt::Display};
 
+use wasm_bindgen::prelude::wasm_bindgen;
+
+#[wasm_bindgen]
 #[derive(Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Entity {
     Arrow,
