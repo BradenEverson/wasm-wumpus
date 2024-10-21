@@ -244,4 +244,17 @@ mod tests {
         }
         assert_eq!(unique_rooms_near, 4);
     }
+
+    #[test]
+    fn walking_into_a_wumpus_is_no_good() {
+        let mut grid = Grid::<5>::generate(0, 0, 0).expect("Create grid");
+        grid.entities.insert(grid.wumpus, Entity::Empty);
+
+        grid.move_to((2, 2));
+        grid.entities.insert((2, 1), Entity::Wumpus);
+
+        let walked_into = grid.move_to((2, 1)).unwrap();
+
+        assert_eq!(walked_into, Entity::Wumpus)
+    }
 }
