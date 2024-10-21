@@ -122,7 +122,11 @@ impl<const N: u8> Grid<N> {
     }
 
     pub fn shoot_at(&mut self, shooting: Coordinate) -> bool {
-        self.arrows -= 1;
+        self.dec();
+        if self.arrows == 0 {
+            return false;
+        }
+
         if let Entity::Wumpus = self.entities[&shooting] {
             self.entities.insert(shooting, Entity::Empty);
             true
@@ -147,6 +151,12 @@ impl<const N: u8> Grid<N> {
             false
         }
     }
+
+    fn dec(&mut self) {
+        if self.arrows > 0 {
+            self.arrows -= 1
+        }
+    }
 }
 
 impl<const N: u8> Display for Grid<N> {
@@ -163,6 +173,8 @@ impl<const N: u8> Display for Grid<N> {
 
 #[cfg(test)]
 mod tests {
+    use crate::game::entity::Entity;
+
     use super::Grid;
 
     #[test]
@@ -170,5 +182,19 @@ mod tests {
         let grid = Grid::<5>::generate(2, 2);
 
         println!("{}", grid)
+    }
+
+    #[test]
+    fn arrows_run_out_properly() {
+        let mut grid: Grid<5> = Grid::generate(0, 0);
+        // Clear the wumpus so we always miss
+        grid.entities.insert(grid.wumpus, Entity::Empty);
+        let mut arrows_shot = 0;
+        while grid.arrows > 0 {
+            grid.shoot_at((0, 0));
+            arrows_shot += 1
+        }
+
+        assert_eq!(arrows_shot, 5)
     }
 }
