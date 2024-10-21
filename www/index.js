@@ -8,3 +8,6 @@ const canvas = document.getElementById("hunting-grounds");
 const game = GameSession.new(2, 2);
 
 canvas.textContent = game.render();
+let messages = game.get_status_messages();
+
+messages.forEach((message) => console.log(message));

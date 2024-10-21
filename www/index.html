@@ -1,34 +1,165 @@
 <!doctype html>
-<html>
+<html lang="en">
     <head>
-        <meta charset="utf-8" />
-        <title>Hunt the Wasm Wumpus</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Hunt The Wumpus</title>
         <style>
             body {
+                margin: 0;
+                height: 100vh;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                font-family: Arial, sans-serif;
+                background-color: #101219;
+            }
+
+            .action {
+                position: relative;
+                width: 150px;
+                height: 150px;
+                margin: 45px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: white;
+                font-size: 24px;
+                cursor: pointer;
+                user-select: none;
+            }
+
+            .action .directions {
                 position: absolute;
-                top: 0;
-                left: 0;
                 width: 100%;
                 height: 100%;
                 display: flex;
-                flex-direction: column;
-                align-items: center;
                 justify-content: center;
-                background-color: #2a2d34;
-                overflow: hidden;
+                align-items: center;
             }
-            /*#hunting-grounds {
-                width: 100%;
-                height: 100%;
-            }*/
+
+            .direction {
+                position: absolute;
+                font-size: 18px;
+                color: white;
+                cursor: pointer;
+                opacity: 0;
+                transition:
+                    opacity 0.6s ease,
+                    transform 0.6s ease;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            }
+
+            .action:hover .direction {
+                opacity: 1;
+                transform: translate(0, 0);
+            }
+
+            .north {
+                transform: translate(0, 30px);
+                top: -50px;
+            }
+
+            .south {
+                transform: translate(0, -30px);
+                bottom: -50px;
+            }
+
+            .east {
+                transform: translate(-30px, 0);
+                right: -50px;
+            }
+
+            .west {
+                transform: translate(30px, 0);
+                left: -50px;
+            }
+
+            .direction:hover {
+                color: #edf060;
+            }
+
+            .shoot {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .move {
+                bottom: 20px;
+                left: 20px;
+            }
         </style>
     </head>
     <body>
-        <pre id="hunting-grounds"></pre>
-        <noscript
-            >This page contains webassembly and javascript content, please
-            enable javascript in your browser.</noscript
-        >
-        <script src="./bootstrap.js"></script>
+        <div class="action move">
+            Move
+            <div class="directions">
+                <div
+                    class="direction north"
+                    onclick="sendRequest('move', 'north')"
+                >
+                    North
+                </div>
+                <div
+                    class="direction south"
+                    onclick="sendRequest('move', 'south')"
+                >
+                    South
+                </div>
+                <div
+                    class="direction east"
+                    onclick="sendRequest('move', 'east')"
+                >
+                    East
+                </div>
+                <div
+                    class="direction west"
+                    onclick="sendRequest('move', 'west')"
+                >
+                    West
+                </div>
+            </div>
+        </div>
+
+        <div class="action shoot">
+            Shoot
+            <div class="directions">
+                <div
+                    class="direction north"
+                    onclick="sendRequest('shoot', 'north')"
+                >
+                    North
+                </div>
+                <div
+                    class="direction south"
+                    onclick="sendRequest('shoot', 'south')"
+                >
+                    South
+                </div>
+                <div
+                    class="direction east"
+                    onclick="sendRequest('shoot', 'east')"
+                >
+                    East
+                </div>
+                <div
+                    class="direction west"
+                    onclick="sendRequest('shoot', 'west')"
+                >
+                    West
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function sendRequest(action, direction) {
+                const url = `/${action}?${direction}`;
+                console.log(`Sending request to: ${url}`);
+                fetch(url)
+                    .then((response) => response.text())
+                    .then((data) => console.log("Response:", data))
+                    .catch((error) => console.error("Error:", error));
+            }
+        </script>
     </body>
 </html>
