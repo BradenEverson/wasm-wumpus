@@ -127,6 +127,7 @@ impl<const N: u8> Grid<N> {
     pub fn move_to(&mut self, new_pos: Coordinate) -> Option<Entity> {
         self.entities.insert(self.player, Entity::Empty);
 
+        self.player = new_pos;
         self.entities.insert(new_pos, Entity::Player)
     }
 
@@ -218,5 +219,29 @@ mod tests {
         let grid_failure = Grid::<2>::generate(100, 100, 100);
 
         assert!(grid_failure.is_none())
+    }
+
+    #[test]
+    fn nearby_works_properly() {
+        let mut grid = Grid::<5>::generate(0, 0, 0).expect("Create grid");
+        grid.entities.insert(grid.wumpus, Entity::Empty);
+
+        grid.move_to((2, 2));
+
+        grid.entities.insert((2, 1), Entity::BottomlessPit);
+        grid.entities.insert((2, 3), Entity::BigBat);
+        grid.entities.insert((1, 2), Entity::Wumpus);
+        grid.entities.insert((3, 2), Entity::Arrow);
+
+        let nearby = grid.look_around();
+        let nearby_iter = nearby.iter();
+
+        let mut unique_rooms_near = 0;
+        for room in nearby_iter {
+            if room.is_some() {
+                unique_rooms_near += 1
+            }
+        }
+        assert_eq!(unique_rooms_near, 4);
     }
 }
