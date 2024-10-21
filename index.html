@@ -151,15 +151,71 @@
             </div>
         </div>
 
-        <script>
-            function sendRequest(action, direction) {
-                const url = `/${action}?${direction}`;
-                console.log(`Sending request to: ${url}`);
-                fetch(url)
-                    .then((response) => response.text())
-                    .then((data) => console.log("Response:", data))
-                    .catch((error) => console.error("Error:", error));
-            }
+        <script type="module">
+            import init, {
+                GameSession,
+                Direction,
+                Action,
+                Entity,
+            } from "./pkg/hunt_the_wumpus_wasm.js";
+
+            await init();
+            const game = GameSession.new(2, 2);
+
+            let messages = game.get_status_messages();
+            messages.forEach((message) => console.log(message));
+
+            window.sendRequest = function (action, direction) {
+                let action_choice = null;
+                let direction_choice = null;
+
+                if (action == "move") {
+                    action_choice = Action.Move;
+                } else {
+                    action_choice = Action.Shoot;
+                }
+
+                switch (direction) {
+                    case "north":
+                        direction_choice = Direction.North;
+                        break;
+                    case "south":
+                        direction_choice = Direction.South;
+                        break;
+                    case "east":
+                        direction_choice = Direction.East;
+                        break;
+                    case "west":
+                        direction_choice = Direction.West;
+                        break;
+                }
+
+                console.log(
+                    `Action: ${action_choice}, Direction: ${direction_choice}`,
+                );
+                console.log(game.render());
+                game.perform_action(action_choice, direction_choice);
+
+                // Get new state and respond accordignly
+                let new_state = game.get_state();
+                let room = game.get_curr_room();
+
+                if (new_state === null) {
+                    if (new_state) {
+                        /// Win!
+                        alert("You have slain the Wumpus, amazing work!");
+                    } else {
+                        /// Lose!
+                        if (room) {
+                            if (room === Entity.BottomlessPit) {
+                                alert("You fell in a bottomless pit :(");
+                            } else {
+                                alert("A Wumpus has eaten you");
+                            }
+                        }
+                    }
+                }
+            };
         </script>
     </body>
 </html>
