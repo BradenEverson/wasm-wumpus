@@ -9,6 +9,7 @@ pub type Coordinate = (u8, u8);
 pub struct Grid<const N: u8> {
     entities: HashMap<Coordinate, Entity>,
     player: Coordinate,
+    wumpus: Coordinate,
     arrows: u8
 }
 
@@ -50,7 +51,7 @@ impl<const N: u8> Grid<N> {
         let wumpus_pos = valid_spots.pop().unwrap();
         entities.insert(wumpus_pos, Entity::Wumpus);
 
-        Self { entities, player, arrows: 5 }
+        Self { entities, player, arrows: 5, wumpus: wumpus_pos }
     }
 
     pub fn cur_pos(&self) -> &Coordinate {
