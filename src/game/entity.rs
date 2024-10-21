@@ -37,6 +37,10 @@ impl<'grid> CardinalDirections<'grid> {
             .cloned()
             .collect()
     }
+
+    pub fn iter(&self) -> std::slice::Iter<'_, Option<&Entity>> {
+        self.0.iter()
+    }
 }
 
 #[cfg(test)]
@@ -55,4 +59,3 @@ mod tests {
         assert_eq!(dirs.nearby_rooms().len(), 1)
     }
 }
-

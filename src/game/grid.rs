@@ -1,8 +1,11 @@
 use std::{collections::HashMap, fmt::Display};
 
-use rand::{seq::SliceRandom, Rng};
+use rand::{seq::SliceRandom, thread_rng, Rng};
 
-use super::{entity::{CardinalDirections, Entity}, Direction};
+use super::{
+    entity::{CardinalDirections, Entity},
+    Direction,
+};
 
 pub type Coordinate = (u8, u8);
 
@@ -10,7 +13,7 @@ pub struct Grid<const N: u8> {
     entities: HashMap<Coordinate, Entity>,
     player: Coordinate,
     wumpus: Coordinate,
-    arrows: u8
+    arrows: u8,
 }
 
 impl<const N: u8> Grid<N> {
@@ -51,7 +54,12 @@ impl<const N: u8> Grid<N> {
         let wumpus_pos = valid_spots.pop().unwrap();
         entities.insert(wumpus_pos, Entity::Wumpus);
 
-        Self { entities, player, arrows: 5, wumpus: wumpus_pos }
+        Self {
+            entities,
+            player,
+            arrows: 5,
+            wumpus: wumpus_pos,
+        }
     }
 
     pub fn cur_pos(&self) -> &Coordinate {
@@ -68,28 +76,28 @@ impl<const N: u8> Grid<N> {
                 } else {
                     Some((x, y - 1))
                 }
-            },
+            }
             Direction::South => {
                 if y == N - 1 {
                     None
                 } else {
                     Some((x, y + 1))
                 }
-            },
+            }
             Direction::East => {
                 if x == N - 1 {
                     None
                 } else {
                     Some((x + 1, y))
                 }
-            },
+            }
             Direction::West => {
                 if x == 0 {
                     None
                 } else {
                     Some((x - 1, y))
                 }
-            },
+            }
         }
     }
 
@@ -116,8 +124,26 @@ impl<const N: u8> Grid<N> {
     pub fn shoot_at(&mut self, shooting: Coordinate) -> bool {
         self.arrows -= 1;
         if let Entity::Wumpus = self.entities[&shooting] {
+            self.entities.insert(shooting, Entity::Empty);
             true
         } else {
+            self.entities.insert(self.wumpus, Entity::Empty);
+
+            let valid_spots: Vec<_> = self
+                .entities
+                .iter()
+                .filter(|(_, location)| *location == &Entity::Empty)
+                .map(|(pos, _)| pos)
+                .cloned()
+                .collect();
+
+            let mut rng = thread_rng();
+
+            let new_wumpus = valid_spots[rng.gen_range(0..valid_spots.len())];
+            self.wumpus = new_wumpus;
+
+            self.entities.insert(self.wumpus, Entity::Wumpus);
+
             false
         }
     }
