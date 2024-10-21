@@ -1,11 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Hello wasm-pack!</title>
-  </head>
-  <body>
-    <noscript>This page contains webassembly and javascript content, please enable javascript in your browser.</noscript>
-    <script src="./bootstrap.js"></script>
-  </body>
+    <head>
+        <meta charset="utf-8" />
+        <title>Hunt the Wasm Wumpus</title>
+        <style>
+            body {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                background-color: #2a2d34;
+                overflow: hidden;
+            }
+            /*#hunting-grounds {
+                width: 100%;
+                height: 100%;
+            }*/
+        </style>
+    </head>
+    <body>
+        <pre id="hunting-grounds"></pre>
+        <noscript
+            >This page contains webassembly and javascript content, please
+            enable javascript in your browser.</noscript
+        >
+        <script src="./bootstrap.js"></script>
+    </body>
 </html>

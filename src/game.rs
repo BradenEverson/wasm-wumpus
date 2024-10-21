@@ -40,6 +40,10 @@ impl GameSession {
     pub fn get_state(&self) -> Option<bool> {
         self.state
     }
+
+    pub fn render(&self) -> String {
+        self.grid.to_string()
+    }
 }
 
 impl GameSession {
