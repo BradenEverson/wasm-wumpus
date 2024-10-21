@@ -17,8 +17,8 @@ pub struct Grid<const N: u8> {
 }
 
 impl<const N: u8> Grid<N> {
-    pub fn generate(bats: u8, pits: u8, arrows: u8) -> Option<Self> {
-        if bats + pits + arrows + 2 > N * N {
+    pub fn generate(bats: u16, pits: u16, arrows: u8) -> Option<Self> {
+        if bats + pits + arrows as u16 + 2 > N as u16 * N as u16 {
             return None;
         }
         let mut rng = rand::thread_rng();

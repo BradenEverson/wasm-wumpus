@@ -14,7 +14,7 @@ pub struct GameSession {
 
 #[wasm_bindgen]
 impl GameSession {
-    pub fn new(bats: u8, pits: u8, arrows: u8) -> Option<GameSession> {
+    pub fn new(bats: u16, pits: u16, arrows: u8) -> Option<GameSession> {
         Some(Self {
             grid: Grid::generate(bats, pits, arrows)?,
             moved_to: None,
