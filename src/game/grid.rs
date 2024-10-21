@@ -4,16 +4,16 @@ use rand::{seq::SliceRandom, Rng};
 
 use super::{entity::{CardinalDirections, Entity}, Direction};
 
-pub type Coordinate = (u32, u32);
+pub type Coordinate = (u8, u8);
 
-pub struct Grid<const N: u32> {
+pub struct Grid<const N: u8> {
     entities: HashMap<Coordinate, Entity>,
     player: Coordinate,
-    arrows: u32
+    arrows: u8
 }
 
-impl<const N: u32> Grid<N> {
-    pub fn generate(bats: u32, pits: u32) -> Self {
+impl<const N: u8> Grid<N> {
+    pub fn generate(bats: u8, pits: u8) -> Self {
         let mut rng = rand::thread_rng();
         let mut entities = HashMap::new();
 
@@ -122,7 +122,7 @@ impl<const N: u32> Grid<N> {
     }
 }
 
-impl<const N: u32> Display for Grid<N> {
+impl<const N: u8> Display for Grid<N> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         for y in 0..N {
             for x in 0..N {
