@@ -197,4 +197,10 @@ mod tests {
 
         assert_eq!(arrows_shot, 5)
     }
+
+    #[test]
+    fn shooting_a_wumpus_wins() {
+        let mut grid: Grid<5> = Grid::generate(0, 0);
+        assert!(grid.shoot_at(grid.wumpus))
+    }
 }
