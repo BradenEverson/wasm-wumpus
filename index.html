@@ -7,6 +7,10 @@
         <title>Hunt The Wumpus</title>
     </head>
     <body>
+        <h1>Hunt The Wumpus (in wasm)</h1>
+        <div class="center-container">
+            <ul id="status"></ul>
+        </div>
         <div class="action move">
             Move
             <div class="directions">
@@ -76,10 +80,28 @@
             } from "./pkg/hunt_the_wumpus_wasm.js";
 
             await init();
-            const game = GameSession.new(2, 2, 3);
+            const game = GameSession.new(2, 2, 0);
+            let status = document.getElementById("status");
 
-            let messages = game.get_status_messages();
-            messages.forEach((message) => console.log(message));
+            let update = function (first_msg) {
+                status.innerHTML = "";
+                let messages = game.get_status_messages();
+                if (first_msg) {
+                    let bullet = document.createElement("li");
+                    let status_msg = document.createElement("i");
+                    status_msg.textContent = first_msg;
+                    bullet.appendChild(status_msg);
+                    status.appendChild(bullet);
+                }
+                messages.forEach((message) => {
+                    let bullet = document.createElement("li");
+                    let status_msg = document.createElement("i");
+                    status_msg.textContent = message;
+                    bullet.appendChild(status_msg);
+                    status.appendChild(bullet);
+                });
+            };
+            update();
 
             window.sendRequest = function (action, direction) {
                 let action_choice = null;
@@ -137,6 +159,7 @@
                 }
 
                 console.log(game.render());
+                update(`You ${action} ${direction}...`);
             };
         </script>
     </body>

@@ -2,17 +2,51 @@ body {
     margin: 0;
     height: 100vh;
     display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     font-family: Arial, sans-serif;
     background-color: #101219;
+    position: relative;
 }
 
+h1 {
+    margin: 20px 0;
+    font-size: 2.5em;
+    color: whitesmoke;
+    text-align: center;
+    text-shadow:
+        0 0 1px #ffffff,
+        0 0 3px #e8e6e6;
+}
+
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    text-align: center;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#status {
+    color: whitesmoke;
+    font-size: 1.5em;
+    text-shadow:
+        0 0 1px #ffffff,
+        0 0 3px #e8e6e6;
+}
+
+/* Controls (Move and Shoot) positioned absolutely in the corners */
 .action {
-    position: relative;
+    position: absolute;
     width: 150px;
     height: 150px;
-    margin: 45px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,6 +54,17 @@ body {
     font-size: 24px;
     cursor: pointer;
     user-select: none;
+    font-weight: bolder;
+}
+
+.move {
+    left: 2.5em;
+    bottom: 2.5em;
+}
+
+.shoot {
+    right: 2.5em;
+    bottom: 2.5em;
 }
 
 .action .directions {
@@ -41,6 +86,7 @@ body {
         opacity 0.6s ease,
         transform 0.6s ease;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    padding: 1.5em;
 }
 
 .action:hover .direction {
@@ -70,14 +116,4 @@ body {
 
 .direction:hover {
     color: #edf060;
-}
-
-.shoot {
-    bottom: 20px;
-    right: 20px;
-}
-
-.move {
-    bottom: 20px;
-    left: 20px;
 }

@@ -67,10 +67,9 @@ impl GameSession {
 
     pub fn get_status_messages(&self) -> Vec<String> {
         let mut res = vec![];
-        let nearby = self.grid.look_around();
-        let mut nearby_rooms = nearby.iter();
+        let nearby = self.grid.look_around().nearby_rooms();
 
-        while let Some(Some(room)) = nearby_rooms.next() {
+        for room in nearby {
             let room_msg = match room {
                 Entity::BigBat => Some("You hear whooshing nearby...".to_string()),
                 Entity::BottomlessPit => Some("You feel a faint breeze.".to_string()),

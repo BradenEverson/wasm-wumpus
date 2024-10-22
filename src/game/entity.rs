@@ -36,7 +36,8 @@ impl<'grid> CardinalDirections<'grid> {
             .clone()
             .iter()
             .filter_map(|dir| *dir)
-            .filter(|dir| seen.insert(*dir) && *dir != &Entity::Empty)
+            .filter(|dir| seen.insert(*dir))
+            .filter(|dir| *dir != &Entity::Empty)
             .cloned()
             .collect()
     }
