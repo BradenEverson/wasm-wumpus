@@ -1,0 +1,18 @@
+{
+  "name": "hunt-the-wumpus-wasm",
+  "type": "module",
+  "collaborators": [
+    "Braden Everson <bradeneverson@gmail.com>"
+  ],
+  "version": "0.1.0",
+  "files": [
+    "hunt_the_wumpus_wasm_bg.wasm",
+    "hunt_the_wumpus_wasm.js",
+    "hunt_the_wumpus_wasm.d.ts"
+  ],
+  "main": "hunt_the_wumpus_wasm.js",
+  "types": "hunt_the_wumpus_wasm.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
