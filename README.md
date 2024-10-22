@@ -1,4 +1,5 @@
-# Hunt The Wumpus (in webassembly)
+# Hunt The Wumpus (in webassembly) 
+![logo](./favicon.ico)
 ### [try it out!](https://bradeneverson.github.io/wasm-wumpus/)
 It's been a long time since you last encountered the Wumpus, and since then, it's moved to the world of Webassembly.
 
