@@ -1,5 +1,6 @@
 use entity::Entity;
 use grid::Grid;
+use rand::{thread_rng, Rng};
 use wasm_bindgen::prelude::wasm_bindgen;
 
 pub mod entity;
@@ -10,6 +11,7 @@ pub struct GameSession {
     grid: Grid<5>,
     moved_to: Option<Entity>,
     state: Option<bool>,
+    carried: bool,
 }
 
 #[wasm_bindgen]
@@ -19,6 +21,7 @@ impl GameSession {
             grid: Grid::generate(bats, pits, arrows)?,
             moved_to: None,
             state: None,
+            carried: false,
         })
     }
 
@@ -52,6 +55,16 @@ impl GameSession {
         self.moved_to
     }
 
+    pub fn arrows_left(&self) -> u8 {
+        self.grid.arrows_left()
+    }
+
+    pub fn was_carried(&mut self) -> bool {
+        let carried = self.carried;
+        self.carried = false;
+        carried
+    }
+
     pub fn get_status_messages(&self) -> Vec<String> {
         let mut res = vec![];
         let nearby = self.grid.look_around();
@@ -79,7 +92,13 @@ impl GameSession {
         if let Some(moved_to) = self.moved_to {
             match moved_to {
                 Entity::Wumpus | Entity::BottomlessPit => self.state = Some(false),
-                Entity::BigBat => todo!(),
+                Entity::BigBat => {
+                    let mut rng = thread_rng();
+                    let x = rng.gen_range(0..5);
+                    let y = rng.gen_range(0..5);
+                    self.moved_to = self.grid.move_to((x, y));
+                    self.carried = true;
+                },
                 _ => {}
             }
         }

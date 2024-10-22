@@ -160,7 +160,7 @@
             } from "./pkg/hunt_the_wumpus_wasm.js";
 
             await init();
-            const game = GameSession.new(2, 2);
+            const game = GameSession.new(2, 2, 3);
 
             let messages = game.get_status_messages();
             messages.forEach((message) => console.log(message));
@@ -193,14 +193,17 @@
                 console.log(
                     `Action: ${action_choice}, Direction: ${direction_choice}`,
                 );
-                console.log(game.render());
                 game.perform_action(action_choice, direction_choice);
+
+                if (game.was_carried()) {
+                    alert("A bat carried you away to a different room...");
+                }
 
                 // Get new state and respond accordignly
                 let new_state = game.get_state();
                 let room = game.get_curr_room();
 
-                if (new_state === null) {
+                if (new_state !== undefined) {
                     if (new_state) {
                         /// Win!
                         alert("You have slain the Wumpus, amazing work!");
@@ -214,7 +217,10 @@
                             }
                         }
                     }
+                    window.location.reload();
                 }
+
+                console.log(game.render());
             };
         </script>
     </body>

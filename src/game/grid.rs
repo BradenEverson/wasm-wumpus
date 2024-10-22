@@ -110,6 +110,10 @@ impl<const N: u8> Grid<N> {
         }
     }
 
+    pub fn arrows_left(&self) -> u8 {
+        self.arrows
+    }
+
     pub fn current_room(&self) -> &Entity {
         self.entities.get(&self.player).unwrap()
     }
