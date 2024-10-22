@@ -1,4 +1,5 @@
 # Hunt The Wumpus (in webassembly)
+### [try it out!](https://bradeneverson.github.io/wasm-wumpus/)
 It's been a long time since you last encountered the Wumpus, and since then, it's moved to the world of Webassembly.
 
 This repo contains a pretty simple version of the classic [hunt the wumpus](https://en.wikipedia.org/wiki/Hunt_the_Wumpus) game, using a 5x5 grid to represent the cave you're exploring. The game logic and state is written in Rust, compiled to webassembly using [wasm-pack](https://github.com/rustwasm/wasm-pack) and run through an HTML frontend with some simpel JS business logic for pushing the state and updating the UI :)
